@@ -120,15 +120,24 @@ importers:
       '@hookform/resolvers':
         specifier: 3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.0.0))
+      '@sepaito/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@sepaito/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      bullmq:
+        specifier: 5.34.5
+        version: 5.34.5
       clsx:
         specifier: 2.1.1
         version: 2.1.1
       framer-motion:
         specifier: 11.15.0
         version: 11.15.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      ioredis:
+        specifier: 5.4.2
+        version: 5.4.2
       lenis:
         specifier: 1.1.20
         version: 1.1.20(react@19.0.0)

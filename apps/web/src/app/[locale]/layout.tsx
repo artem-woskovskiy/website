@@ -1,6 +1,7 @@
 import { PageTransition } from '@/components/marketing/page-transition';
 import { ScrollProgress } from '@/components/marketing/scroll-progress';
 import { SmoothScroll } from '@/components/marketing/smooth-scroll';
+import { SplashScreen } from '@/components/marketing/splash-screen';
 import { type Locale, locales } from '@/i18n/config';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
@@ -57,6 +58,7 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
+          <SplashScreen />
           <SmoothScroll />
           <ScrollProgress />
           <PageTransition>{children}</PageTransition>
