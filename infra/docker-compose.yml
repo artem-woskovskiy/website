@@ -1,0 +1,56 @@
+name: sepaito
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: sepaito-postgres
+    environment:
+      POSTGRES_USER: sepaito
+      POSTGRES_PASSWORD: sepaito
+      POSTGRES_DB: sepaito
+    ports:
+      - '5432:5432'
+    volumes:
+      - sepaito-pg:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U sepaito -d sepaito']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1-p3
+    container_name: sepaito-pgbouncer
+    environment:
+      DB_USER: sepaito
+      DB_PASSWORD: sepaito
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_NAME: sepaito
+      POOL_MODE: transaction
+      ADMIN_USERS: sepaito
+      AUTH_TYPE: scram-sha-256
+      MAX_CLIENT_CONN: '500'
+      DEFAULT_POOL_SIZE: '20'
+    ports:
+      - '6432:5432'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: sepaito-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - sepaito-redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  sepaito-pg:
+  sepaito-redis:

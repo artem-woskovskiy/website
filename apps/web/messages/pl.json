@@ -1,0 +1,331 @@
+{
+  "common": {
+    "appName": "Sepaito",
+    "tagline": "IDE dla agentów AI",
+    "loading": "Ładowanie…",
+    "save": "Zapisz",
+    "saving": "Zapisywanie…",
+    "saved": "Zapisano",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "back": "Wstecz",
+    "continue": "Dalej",
+    "submit": "Wyślij",
+    "create": "Utwórz",
+    "close": "Zamknij",
+    "ok": "OK",
+    "error": "Coś poszło nie tak",
+    "success": "Gotowe",
+    "language": "Język"
+  },
+  "nav": {
+    "product": "Produkt",
+    "pricing": "Cennik",
+    "about": "O nas",
+    "download": "Pobierz",
+    "legal": "Dokumenty",
+    "signIn": "Zaloguj się",
+    "getSepaito": "Pobierz Sepaito",
+    "account": "Konto"
+  },
+  "footer": {
+    "tagline": "IDE dla agentów AI — dla pokolenia terminala.",
+    "product": "Produkt",
+    "company": "Firma",
+    "legal": "Dokumenty",
+    "download": "Pobierz",
+    "changelog": "Changelog",
+    "status": "Status",
+    "about": "O nas",
+    "pricing": "Cennik",
+    "signUp": "Załóż konto",
+    "blog": "Blog",
+    "contact": "Kontakt",
+    "terms": "Warunki",
+    "privacy": "Prywatność",
+    "rights": "Wszelkie prawa zastrzeżone."
+  },
+  "hero": {
+    "badgeTag": "Nowość",
+    "badge": "Sepaito 1.0 — publiczna beta",
+    "titleLine1": "Koduj z",
+    "titleSwarm": "rojem",
+    "titleSeparator": " agentów.",
+    "titleLine2": "Nie z jednym.",
+    "subtitle": "Sepaito to IDE dla agentów AI — wiele terminali, wielu agentów, wiele modeli. Twoje klucze API. Claude, Codex, Qwen i twoi agenci MCP — równolegle w jednym oknie.",
+    "ctaPrimary": "Pobierz Sepaito",
+    "ctaSecondary": "Cennik"
+  },
+  "marquee": {
+    "items": [
+      "Zaufanie deweloperów",
+      "wieloagentowe",
+      "wiele terminali",
+      "wiele modeli",
+      "MCP w standardzie",
+      "własne klucze",
+      "macOS · Windows · Linux",
+      "prywatność domyślnie"
+    ]
+  },
+  "stats": {
+    "eyebrow": "W liczbach",
+    "title": "Stworzony, by uruchamiać tylu agentów, ilu wymyślisz.",
+    "models": "obsługiwanych modeli",
+    "themes": "wbudowanych motywów",
+    "panes": "równoległych terminali",
+    "local": "lokalnie domyślnie"
+  },
+  "reel": {
+    "eyebrow": "Dlaczego Sepaito",
+    "title": "Stworzone tak, jak naprawdę kodujesz.",
+    "subtitle": "Cztery powody, dla których deweloperzy przesiadają się z Cursor i Claude Code.",
+    "step1Title": "Terminale dla każdego agenta",
+    "step1Body": "Claude, Codex, Qwen i twoi agenci MCP — obok siebie. Patrz, kto pierwszy.",
+    "step2Title": "Jeden workspace, wszystkie modele",
+    "step2Body": "Twoje klucze API. Przełączaj dostawców bez wychodzenia z pliku.",
+    "step3Title": "Motywy, w których jest u siebie",
+    "step3Body": "15 starannie dobranych motywów — Claude Darkula, Cursor, Dracula, Gruvbox, Nord, Solarized i więcej.",
+    "step4Title": "Dla pokolenia terminala",
+    "step4Body": "vibe-coding IDE, które szanuje twoją klawiaturę, shell i gust."
+  },
+  "features": {
+    "eyebrow": "Funkcje",
+    "title": "Wszystko, czego brakuje twojemu IDE.",
+    "f1Title": "Wielopanelowe terminale",
+    "f1Body": "Do 16 równoległych paneli na workspace. Dziel myszką.",
+    "f2Title": "Model dla każdego panelu",
+    "f2Body": "Claude, Codex, Qwen i twoi agenci MCP — każdy w swoim panelu.",
+    "f3Title": "Live diff z Git",
+    "f3Body": "Kolumna diffu zsynchronizowana z working tree.",
+    "f4Title": "Workspace z pamięcią",
+    "f4Body": "Każdy pamięta swoich agentów, prompty i panele.",
+    "f5Title": "Twoje klucze API",
+    "f5Body": "Szyfrowane lokalnie. Klucze nigdy nie trafiają na nasze serwery.",
+    "f6Title": "15 wbudowanych motywów",
+    "f6Body": "Claude Darkula, Cursor, Dracula, Gruvbox, Nord, Solarized i więcej.",
+    "f7Title": "MCP w standardzie",
+    "f7Body": "Każde narzędzie kompatybilne z MCP działa jako panel. Bez kleju.",
+    "f8Title": "Prywatność",
+    "f8Body": "Jeden przełącznik, domyślnie wyłączony. Promptów nie logujemy.",
+    "f9Title": "Wieloplatformowe",
+    "f9Body": "macOS, Windows, Linux. Jeden workspace, każde urządzenie."
+  },
+  "themesStrip": {
+    "eyebrow": "Motywy",
+    "title": "Piętnaście starannie dobranych motywów.",
+    "subtitle": "Każdy motyw to ręcznie strojona paleta Tailwind. Zmień w Settings → Themes."
+  },
+  "models": {
+    "eyebrow": "Modele",
+    "title": "Claude · GPT · Gemini · Kimi — i twoje.",
+    "body": "Podłącz własne klucze API. Nowe modele dodajesz w Settings → Models & API. Anthropic Claude Opus / Sonnet / Haiku 4.x · OpenAI GPT-5.x · Google Gemini 3.1 Pro · Moonshot Kimi K2.5."
+  },
+  "cta": {
+    "title": "Przestań żonglować narzędziami.",
+    "subtitle": "Jedno IDE dla każdego agenta, którego użyjesz.",
+    "primary": "Pobierz Sepaito",
+    "secondary": "Cennik"
+  },
+  "pricing": {
+    "eyebrow": "Cennik",
+    "title": "Proste plany. Bez liczenia stanowisk.",
+    "subtitle": "Zacznij za darmo. Upgrade, gdy przerośniesz limity.",
+    "monthly": "Miesięcznie",
+    "yearly": "Rocznie",
+    "yearlyDiscount": "Oszczędź 2 miesiące",
+    "perMonth": "/ mies",
+    "perYear": "/ rok",
+    "free": "Za darmo",
+    "currentPlan": "Bieżący plan",
+    "upgrade": "Upgrade",
+    "subscribe": "Subskrybuj",
+    "compareFeatures": "Porównaj funkcje",
+    "billed": "Rozliczenie {interval}",
+    "billedMonthly": "miesięczne",
+    "billedYearly": "roczne"
+  },
+  "about": {
+    "eyebrow": "O nas",
+    "titleStart": "Budujemy IDE, którego nam",
+    "titleEm": "brakowało",
+    "titleEnd": ", gdy zaczynaliśmy vibe-codować.",
+    "subtitle": "Większość edytorów traktuje AI jak pomocnika. My traktujemy go jak rój. W Sepaito każdy agent to obywatel pierwszej kategorii — z własnym panelem, modelem i opinią.",
+    "manifestoEyebrow": "Manifest",
+    "manifestoTitle": "Trzy rzeczy, w które wierzymy.",
+    "m1": "IDE to nowy shell. Zasługuje na prawdziwych agentów, nie popupy.",
+    "m2": "Workspace powinien pamiętać agentów, którzy w nim pracowali. Historia rozmów to część kodu.",
+    "m3": "Lokalnie. Zawsze. Twoje klucze, twoje prompty, twoja prywatność.",
+    "timelineEyebrow": "Historia",
+    "timelineTitle": "Jak tu trafiliśmy.",
+    "t1Year": "2025 · Wiosna",
+    "t1Body": "Pierwszy prototyp: klon Cursor z trzema równoległymi terminalami.",
+    "t2Year": "2025 · Lato",
+    "t2Body": "Architektura multi-model. Claude, GPT i własny agent MCP w jednym workspace.",
+    "t3Year": "2025 · Jesień",
+    "t3Body": "Beta AgentPanel dla 100 deweloperów.",
+    "t4Year": "2026 · Wiosna",
+    "t4Body": "Sepaito 1.0 — 15 motywów, 8 modeli, publiczny launch.",
+    "valuesEyebrow": "Wartości",
+    "valuesTitle": "Czego nie odpuścimy.",
+    "v1Title": "Lokalnie pierwsze",
+    "v1Body": "Twój kod, prompty i klucze żyją na twojej maszynie. Nie widzimy ich.",
+    "v2Title": "Niezależne od dostawcy",
+    "v2Body": "Bez vendor lock-in. Claude, GPT, Gemini, Kimi — i każdy serwer MCP.",
+    "v3Title": "Klawiatura ponad wszystko",
+    "v3Body": "Każdy flow z poziomu klawisza. Tab, Cmd+P i twój shell rządzą."
+  },
+  "auth": {
+    "signIn": {
+      "title": "Witaj z powrotem",
+      "subtitle": "Zaloguj się do swojego konta Sepaito",
+      "emailLabel": "Email",
+      "passwordLabel": "Hasło",
+      "submit": "Zaloguj",
+      "signingIn": "Logowanie…",
+      "noAccount": "Nie masz konta?",
+      "signUp": "Zarejestruj się",
+      "forgot": "Nie pamiętasz hasła?"
+    },
+    "signUp": {
+      "title": "Załóż konto",
+      "subtitle": "Hobby — darmowy na zawsze. Upgrade w każdej chwili.",
+      "nameLabel": "Imię (opcjonalnie)",
+      "emailLabel": "Email",
+      "passwordLabel": "Hasło",
+      "passwordHint": "minimum 10 znaków",
+      "agreePrefix": "Akceptuję",
+      "and": "i",
+      "terms": "Warunki",
+      "privacy": "Politykę prywatności",
+      "submit": "Załóż konto",
+      "signingUp": "Tworzymy konto…",
+      "haveAccount": "Masz już konto?",
+      "signIn": "Zaloguj"
+    },
+    "forgot": {
+      "title": "Resetuj hasło",
+      "subtitle": "Wyślemy link do ustawienia nowego hasła",
+      "emailLabel": "Email",
+      "submit": "Wyślij link",
+      "submitting": "Wysyłanie…",
+      "sent": "Jeśli konto istnieje, email dotrze za chwilę."
+    },
+    "verify": {
+      "title": "Weryfikujemy email…",
+      "success": "Email zweryfikowany. Możesz zamknąć kartę.",
+      "failure": "Link nieprawidłowy lub wygasł."
+    }
+  },
+  "account": {
+    "nav": {
+      "general": "Profil",
+      "billing": "Płatności",
+      "apiKeys": "Modele i API",
+      "themes": "Motywy",
+      "chat": "Domyślne czatu",
+      "notifications": "Powiadomienia",
+      "devices": "Urządzenia",
+      "signOut": "Wyloguj"
+    },
+    "general": {
+      "title": "Profil",
+      "subtitle": "Jak wyglądasz w Sepaito",
+      "name": "Imię",
+      "email": "Email",
+      "locale": "Język",
+      "save": "Zapisz zmiany"
+    },
+    "billing": {
+      "title": "Płatności",
+      "subtitle": "Subskrypcja, faktury i plan",
+      "currentPlan": "Bieżący plan",
+      "noActive": "Brak aktywnej subskrypcji",
+      "upgrade": "Upgrade",
+      "cancel": "Anuluj na koniec okresu",
+      "invoices": "Faktury",
+      "noInvoices": "Brak faktur"
+    },
+    "apiKeys": {
+      "title": "Modele i API",
+      "subtitle": "Klucze API dla aplikacji IDE",
+      "create": "Utwórz nowy klucz",
+      "name": "Nazwa",
+      "createdAt": "Utworzono",
+      "lastUsed": "Ostatnio użyty",
+      "revoke": "Unieważnij",
+      "newKeyHint": "Skopiuj klucz teraz. Nie zobaczysz go ponownie.",
+      "noKeys": "Brak kluczy"
+    },
+    "themes": {
+      "title": "Motywy",
+      "subtitle": "Domyślny motyw dla nowych workspace'ów"
+    },
+    "chat": {
+      "title": "Domyślne czatu",
+      "subtitle": "Domyślny agent i model"
+    },
+    "notifications": {
+      "title": "Powiadomienia",
+      "subtitle": "Email i powiadomienia w aplikacji"
+    },
+    "devices": {
+      "title": "Urządzenia",
+      "subtitle": "Aktywne sesje",
+      "revoke": "Wyloguj",
+      "thisDevice": "To urządzenie"
+    }
+  },
+  "admin": {
+    "nav": {
+      "overview": "Przegląd",
+      "users": "Użytkownicy",
+      "payments": "Płatności"
+    },
+    "overview": {
+      "title": "Admin",
+      "subtitle": "Przegląd operacyjny",
+      "totalUsers": "Wszystkich użytkowników",
+      "activeSubs": "Aktywnych subskrypcji",
+      "revenueTotal": "Całkowity przychód",
+      "revenue30d": "Przychód 30 dni"
+    },
+    "users": {
+      "title": "Użytkownicy",
+      "search": "Szukaj po email lub imieniu…",
+      "email": "Email",
+      "name": "Imię",
+      "role": "Rola",
+      "createdAt": "Utworzono",
+      "view": "Otwórz"
+    },
+    "payments": {
+      "title": "Płatności",
+      "user": "Użytkownik",
+      "amount": "Kwota",
+      "status": "Status",
+      "createdAt": "Utworzono",
+      "invoice": "Faktura"
+    }
+  },
+  "legal": {
+    "termsTitle": "Warunki świadczenia usług",
+    "privacyTitle": "Polityka prywatności",
+    "lastUpdated": "Ostatnia aktualizacja"
+  },
+  "download": {
+    "eyebrow": "Pobierz",
+    "title": "Pobierz Sepaito",
+    "subtitle": "Natywne buildy dla macOS, Windows i Linux. Przy pierwszym uruchomieniu IDE sprawdzi subskrypcję po kluczu z Konto → Klucze API.",
+    "macos": "macOS · Apple Silicon",
+    "windows": "Windows · 64-bit",
+    "linux": "Linux · AppImage",
+    "download": "Pobierz",
+    "version": "Wersja 1.0.0 (beta)",
+    "afterDownload": "Już pobrałeś?",
+    "needKey": "Utwórz klucz API w koncie, aby aktywować IDE.",
+    "accountKeys": "Konto → Klucze API",
+    "signUp": "Załóż konto"
+  }
+}

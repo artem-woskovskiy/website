@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package sepaito;
+
+// Subscription service consumed by the desktop IDE app (Sepaito).
+service SubscriptionService {
+  // Validate that an API key + install id maps to an active plan.
+  rpc Validate (ValidateRequest) returns (ValidateResponse);
+
+  // Heartbeat from the running IDE — updates lastSeenAt for the device.
+  rpc Heartbeat (HeartbeatRequest) returns (HeartbeatResponse);
+}
+
+message ValidateRequest {
+  string api_key   = 1;
+  string install_id = 2;
+  string platform  = 3; // 'darwin' | 'win32' | 'linux'
+  string app_version = 4;
+}
+
+message ValidateResponse {
+  bool   ok                 = 1;
+  string user_id            = 2;
+  string plan_code          = 3; // 'HOBBY' | 'PRO' | 'TEAM'
+  string status             = 4; // 'ACTIVE' | ...
+  int64  current_period_end = 5; // unix ms; 0 if none
+  int32  panes_limit        = 6;
+  int32  workspaces_limit   = 7;
+  string reason             = 8; // when ok=false
+}
+
+message HeartbeatRequest {
+  string api_key    = 1;
+  string install_id = 2;
+}
+
+message HeartbeatResponse {
+  bool ok = 1;
+}

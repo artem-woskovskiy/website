@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": [".env"],
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "REDIS_URL",
+    "AUTH_SECRET",
+    "JWT_SECRET",
+    "ROBOKASSA_MERCHANT_LOGIN",
+    "ROBOKASSA_PASSWORD_1",
+    "ROBOKASSA_PASSWORD_2",
+    "ROBOKASSA_TEST_MODE",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "PUBLIC_WEB_URL",
+    "PUBLIC_API_URL",
+    "GRPC_BIND",
+    "ADMIN_BOOTSTRAP_EMAIL"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    }
+  }
+}

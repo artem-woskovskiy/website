@@ -1,0 +1,157 @@
+name: sepaito
+
+# Full local-dev stack: postgres + pgbouncer + redis + api + web + one-shot
+# migrate/seed job. Bring everything up with:
+#
+#   docker compose up --build -d
+#
+# Then visit http://localhost:3000
+#
+# To stop and wipe the DB:
+#
+#   docker compose down -v
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: sepaito-postgres
+    environment:
+      POSTGRES_USER: sepaito
+      POSTGRES_PASSWORD: sepaito
+      POSTGRES_DB: sepaito
+    ports:
+      - '5432:5432'
+    volumes:
+      - sepaito-pg:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U sepaito -d sepaito']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1-p3
+    container_name: sepaito-pgbouncer
+    environment:
+      DB_USER: sepaito
+      DB_PASSWORD: sepaito
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_NAME: sepaito
+      POOL_MODE: transaction
+      ADMIN_USERS: sepaito
+      AUTH_TYPE: scram-sha-256
+      MAX_CLIENT_CONN: '500'
+      DEFAULT_POOL_SIZE: '20'
+    ports:
+      - '6432:5432'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: sepaito-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - sepaito-redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # One-shot job: prisma migrate deploy + seed. Runs against the DIRECT db url
+  # (port 5432, no pgbouncer) since pgbouncer transaction mode is incompatible
+  # with prepared statements / advisory locks used by migrate.
+  migrate:
+    image: node:20.18-bookworm-slim
+    container_name: sepaito-migrate
+    working_dir: /repo
+    environment:
+      DATABASE_URL: postgresql://sepaito:sepaito@postgres:5432/sepaito?schema=public
+      DIRECT_DATABASE_URL: postgresql://sepaito:sepaito@postgres:5432/sepaito?schema=public
+      ADMIN_BOOTSTRAP_EMAIL: ${ADMIN_BOOTSTRAP_EMAIL:-adam@sepaito.ai}
+    volumes:
+      - .:/repo
+    command: >
+      sh -c "
+        apt-get update -y && apt-get install -y --no-install-recommends openssl ca-certificates >/dev/null &&
+        corepack enable && corepack prepare pnpm@9.15.1 --activate &&
+        pnpm install --frozen-lockfile &&
+        pnpm --filter @sepaito/db generate &&
+        pnpm --filter @sepaito/db migrate:deploy &&
+        pnpm --filter @sepaito/db seed
+      "
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: sepaito/api:local
+    container_name: sepaito-api
+    environment:
+      NODE_ENV: production
+      PORT: '4000'
+      DATABASE_URL: postgresql://sepaito:sepaito@pgbouncer:5432/sepaito?schema=public&pgbouncer=true&connection_limit=1
+      DIRECT_DATABASE_URL: postgresql://sepaito:sepaito@postgres:5432/sepaito?schema=public
+      REDIS_URL: redis://redis:6379
+      AUTH_SECRET: ${AUTH_SECRET:-change-me-to-32+-bytes-of-base64-aaaaaaaaaaaaaaaaaaaaaa}
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-32+-bytes-of-base64-bbbbbbbbbbbbbbbbbbbbbb}
+      JWT_ACCESS_TTL: 15m
+      JWT_REFRESH_TTL: 30d
+      RESEND_API_KEY: ${RESEND_API_KEY:-re_stub}
+      EMAIL_FROM: ${EMAIL_FROM:-Sepaito <noreply@sepaito.ai>}
+      ROBOKASSA_MERCHANT_LOGIN: ${ROBOKASSA_MERCHANT_LOGIN:-demo}
+      ROBOKASSA_PASSWORD_1: ${ROBOKASSA_PASSWORD_1:-password1}
+      ROBOKASSA_PASSWORD_2: ${ROBOKASSA_PASSWORD_2:-password2}
+      ROBOKASSA_TEST_MODE: '1'
+      PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:-http://localhost:3000}
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:4000}
+      GRPC_BIND: 0.0.0.0:50051
+      ADMIN_BOOTSTRAP_EMAIL: ${ADMIN_BOOTSTRAP_EMAIL:-adam@sepaito.ai}
+    ports:
+      - '4000:4000'
+      - '50051:50051'
+    depends_on:
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://127.0.0.1:4000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: sepaito/web:local
+    container_name: sepaito-web
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      HOSTNAME: 0.0.0.0
+      # Server-side and client-side both need to reach the API. The Next
+      # rewrite for /api/v1/* runs on the server and must use the in-network
+      # hostname.
+      PUBLIC_API_URL: http://api:4000
+      PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:-http://localhost:3000}
+    ports:
+      - '3000:3000'
+    depends_on:
+      api:
+        condition: service_started
+
+volumes:
+  sepaito-pg:
+  sepaito-redis:

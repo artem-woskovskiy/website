@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  /* canvas — devin.ai light theme */
+  --color-bg: oklch(1 0 0);
+  --color-bg-elev: oklch(0.985 0 0);
+  --color-bg-soft: oklch(0.97 0.002 240);
+  --color-bg-grid: oklch(0.92 0.003 240);
+
+  /* ink */
+  --color-fg: oklch(0.18 0.013 250);
+  --color-fg-mute: oklch(0.45 0.014 250);
+  --color-fg-dim: oklch(0.62 0.012 250);
+
+  /* accent — devin blue */
+  --color-accent: oklch(0.6 0.18 260);
+  --color-accent-strong: oklch(0.52 0.2 260);
+  --color-accent-soft: oklch(0.85 0.08 260 / 0.35);
+  --color-accent-fg: oklch(0.99 0 0);
+
+  /* signal */
+  --color-success: oklch(0.62 0.16 150);
+  --color-danger: oklch(0.6 0.22 25);
+
+  /* mesh — soft pastels for light bg */
+  --mesh-1: oklch(0.85 0.12 260);
+  --mesh-2: oklch(0.86 0.1 320);
+  --mesh-3: oklch(0.86 0.11 200);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.011em;
+}
+
+/* Lenis smooth-scroll required reset — keeps scrolling on html, prevents
+   accidental momentum jank when sub-trees use overflow: auto. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-fg);
+}
+
+.hairline {
+  border: 1px solid var(--color-bg-grid);
+}
+.hairline-b {
+  border-bottom: 1px solid var(--color-bg-grid);
+}
+.hairline-t {
+  border-top: 1px solid var(--color-bg-grid);
+}
+
+/* Subtle pastel mesh for light theme — used behind hero / CTA */
+.mesh::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(120px);
+  opacity: 0.55;
+  background-image: radial-gradient(38% 45% at 22% 18%, var(--mesh-1), transparent 60%),
+    radial-gradient(40% 50% at 80% 25%, var(--mesh-2), transparent 60%),
+    radial-gradient(45% 50% at 55% 100%, var(--mesh-3), transparent 60%);
+}
+
+/* Pill badge — devin.ai style */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2rem;
+  padding: 0 0.85rem 0 0.4rem;
+  border-radius: 9999px;
+  background: oklch(0.18 0.013 250);
+  color: oklch(0.98 0 0);
+  font-size: 0.8rem;
+  letter-spacing: -0.005em;
+  border: 1px solid oklch(0.18 0.013 250);
+  transition: background 0.2s ease;
+}
+.pill:hover {
+  background: oklch(0.25 0.013 250);
+}
+.pill-tag {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.4rem;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+/* Subtle dot grid backdrop for hero — devin uses this very subtly */
+.dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, oklch(0.85 0 0) 1px, transparent 0);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.96 0 0) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .shimmer {
+    animation: none;
+  }
+}
