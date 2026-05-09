@@ -61,7 +61,7 @@ export default async function LocaleLayout({
           <SplashScreen />
           <SmoothScroll />
           <ScrollProgress />
-          <PageTransition>{children}</PageTransition>
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

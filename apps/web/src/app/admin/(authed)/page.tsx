@@ -116,28 +116,28 @@ export default async function AdminOverviewPage() {
           label="Users"
           value={totals.users}
           hint={`${totals.verifiedUsers} verified`}
-          icon={Users}
+          iconName="users"
           delay={0.0}
         />
         <StatCard
           label="Active subs"
           value={totals.activeSubs}
           hint="ACTIVE + TRIALING"
-          icon={UserCheck}
+          iconName="user-check"
           delay={0.05}
         />
         <StatCard
           label="Plans"
           value={totals.activePlans}
           hint="active"
-          icon={Sparkles}
+          iconName="sparkles"
           delay={0.1}
         />
         <StatCard
           label="API keys"
           value={totals.activeApiKeys}
           hint="not revoked"
-          icon={KeyRound}
+          iconName="key-round"
           delay={0.15}
         />
         <StatCard
@@ -145,14 +145,14 @@ export default async function AdminOverviewPage() {
           value={totals.revenue30d}
           format="currency-rub"
           hint="succeeded only"
-          icon={CreditCard}
+          iconName="credit-card"
           delay={0.2}
         />
         <StatCard
           label="Audit (7d)"
           value={recentAudit.length}
           hint="recent operator actions"
-          icon={Inbox}
+          iconName="inbox"
           delay={0.25}
         />
       </section>

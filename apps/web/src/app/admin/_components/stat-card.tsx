@@ -9,7 +9,7 @@ interface StatCardProps {
   label: string;
   value: number;
   hint?: string;
-  icon?: ComponentType<{ className?: string }>;
+  iconName?: 'users' | 'user-check' | 'sparkles' | 'key-round' | 'credit-card' | 'inbox';
   format?: 'number' | 'currency-rub';
   delay?: number;
   className?: string;
@@ -24,15 +24,35 @@ function formatRub(kopecks: number): string {
   return `${rub.toLocaleString('ru-RU')} ₽`;
 }
 
+import { 
+  CreditCard, 
+  Inbox, 
+  KeyRound, 
+  Sparkles, 
+  UserCheck, 
+  Users, 
+  type LucideIcon 
+} from 'lucide-react';
+
+const ICONS: Record<string, LucideIcon> = {
+  users: Users,
+  'user-check': UserCheck,
+  sparkles: Sparkles,
+  'key-round': KeyRound,
+  'credit-card': CreditCard,
+  inbox: Inbox,
+};
+
 export function StatCard({
   label,
   value,
   hint,
-  icon: Icon,
+  iconName,
   format = 'number',
   delay = 0,
   className,
 }: StatCardProps) {
+  const Icon = iconName ? ICONS[iconName] : null;
   const motionValue = useMotionValue(0);
   const spring = useSpring(motionValue, { duration: 800, bounce: 0 });
   const display = useTransform(spring, (v) =>
