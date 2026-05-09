@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.10.0",
+    "@sepaito/db": "workspace:*",
     "@sepaito/shared": "workspace:*",
+    "bullmq": "5.34.5",
     "clsx": "2.1.1",
     "framer-motion": "11.15.0",
+    "ioredis": "5.4.2",
     "lenis": "1.1.20",
     "lucide-react": "0.469.0",
     "next": "15.1.3",

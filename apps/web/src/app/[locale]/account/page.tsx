@@ -31,7 +31,16 @@ export default async function AccountPage() {
     serverFetch<ProfileResponse>('/users/me'),
     serverFetch<ApiKeyDto[]>('/api-keys'),
   ]);
-  if (!profile) return null;
+  if (!profile) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4 rounded-xl border border-dashed border-[var(--color-bg-grid)] p-12 text-center">
+        <h2 className="text-xl font-semibold">Unable to load profile</h2>
+        <p className="text-sm text-[var(--color-fg-mute)]">
+          We couldn't fetch your account data. Please try refreshing the page or signing in again.
+        </p>
+      </div>
+    );
+  }
 
   const sub = profile.subscriptions?.[0];
   const planName = sub?.plan.name ?? 'Hobby';
@@ -44,6 +53,10 @@ export default async function AccountPage() {
         Math.ceil((new Date(renewsOn).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
       )
     : 30;
+
+  // Real signal that doesn't pretend to track call counts we never recorded:
+  // active API keys ≈ active integrations the user wired into the IDE.
+  const activeApiKeys = apiKeys?.length ?? 0;
 
   return (
     <div className="space-y-8">
@@ -59,9 +72,9 @@ export default async function AccountPage() {
       <Reveal>
         <KpiCards
           daysUntilRenewal={daysUntilRenewal}
-          apiKeyCount={apiKeys?.length ?? 0}
+          apiKeyCount={activeApiKeys}
           modelsAvailable={8}
-          callsToday={Math.floor(Math.random() * 80) + 20}
+          activeIntegrations={activeApiKeys}
         />
       </Reveal>
 

@@ -13,12 +13,13 @@ export function KpiCards({
   daysUntilRenewal,
   apiKeyCount,
   modelsAvailable,
-  callsToday,
+  activeIntegrations,
 }: {
   daysUntilRenewal: number;
   apiKeyCount: number;
   modelsAvailable: number;
-  callsToday: number;
+  /** Live count of API keys actively wired into the IDE. */
+  activeIntegrations: number;
 }) {
   const reduced = useReducedMotion();
   const cards = [
@@ -44,11 +45,11 @@ export function KpiCards({
       activity: 0.85,
     },
     {
-      label: 'Calls today',
-      value: callsToday,
+      label: 'Active integrations',
+      value: activeIntegrations,
       suffix: '',
       icon: Activity,
-      activity: 0.7,
+      activity: Math.min(1, 0.2 + activeIntegrations * 0.15),
     },
   ];
 

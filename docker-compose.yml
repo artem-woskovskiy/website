@@ -146,6 +146,11 @@ services:
       # hostname.
       PUBLIC_API_URL: http://api:4000
       PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:-http://localhost:3000}
+      DATABASE_URL: postgresql://sepaito:sepaito@pgbouncer:5432/sepaito?schema=public&pgbouncer=true&connection_limit=1
+      DIRECT_DATABASE_URL: postgresql://sepaito:sepaito@postgres:5432/sepaito?schema=public
+      ADMIN_PANEL_PASSWORD: ${ADMIN_PANEL_PASSWORD:-admin}
+      ADMIN_PANEL_SECRET: ${ADMIN_PANEL_SECRET:-change-me-to-32+-bytes-of-base64-cccccccccccccccccccccc}
+      AUTH_SECRET: ${AUTH_SECRET:-change-me-to-32+-bytes-of-base64-aaaaaaaaaaaaaaaaaaaaaa}
     ports:
       - '3000:3000'
     depends_on:

@@ -42,9 +42,16 @@ COPY tsconfig.base.json ./
 COPY packages packages
 COPY apps/web apps/web
 
+RUN pnpm --filter @sepaito/db generate
 RUN pnpm --filter @sepaito/shared build
+RUN pnpm --filter @sepaito/db build
 # next.config.mjs sets output: 'standalone', so we get a self-contained server.js
 RUN pnpm --filter @sepaito/web build
+
+# Fix Prisma for standalone: copy the generated client into the exact pnpm-style path
+RUN mkdir -p apps/web/.next/standalone/node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/.prisma \
+    && cp -R node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/.prisma/* \
+             apps/web/.next/standalone/node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/.prisma/
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. runtime — only the standalone bundle
@@ -62,7 +69,6 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends ca-certifica
 
 WORKDIR /app
 
-# standalone bundle — minimal node_modules + server.js
 COPY --from=build /repo/apps/web/.next/standalone/ ./
 COPY --from=build /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /repo/apps/web/public ./apps/web/public

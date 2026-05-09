@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -11,15 +12,13 @@ export function SiteHeader({ user }: { user: { email: string; name: string | nul
   const t = useTranslations('nav');
   const { scrollY } = useScroll();
   // Slightly stronger blur once the user has scrolled past the hero.
-  const bgOpacity = useTransform(scrollY, [0, 80], [0.6, 0.9]);
+  const bgOpacity = useTransform(scrollY, [0, 80], [0.55, 0.85]);
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
 
   return (
     <motion.header
-      className="sticky top-0 z-40 backdrop-blur-md"
-      style={{
-        backgroundColor: useTransform(bgOpacity, (v) => `rgba(255, 255, 255, ${v})`),
-      }}
+      className="sticky top-0 z-40 bg-[var(--color-bg)]/60 backdrop-blur-md"
+      style={{ ['--header-bg-opacity' as string]: bgOpacity }}
     >
       <motion.div
         className="absolute inset-x-0 bottom-0 h-px bg-[var(--color-bg-grid)]"
@@ -44,6 +43,7 @@ export function SiteHeader({ user }: { user: { email: string; name: string | nul
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <LocaleSwitcher />
           {user ? (
             <Link
