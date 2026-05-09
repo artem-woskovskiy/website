@@ -28,8 +28,15 @@ import type {
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { type AuthUser, CurrentUser } from '../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { SameOriginGuard } from '../common/guards/same-origin.guard';
+import { Throttle } from '../common/guards/throttle.guard';
 import { ZodValidationPipe } from '../common/pipes/zod.pipe';
 import { AuthService } from './auth.service';
+
+const SignInThrottle = Throttle({ scope: 'auth.sign-in', windowMs: 60_000, max: 8 });
+const SignUpThrottle = Throttle({ scope: 'auth.sign-up', windowMs: 60_000, max: 5 });
+const ForgotThrottle = Throttle({ scope: 'auth.forgot', windowMs: 60_000, max: 5 });
+const ResetThrottle = Throttle({ scope: 'auth.reset', windowMs: 60_000, max: 8 });
 
 const REFRESH_COOKIE = 'sep_rt';
 const ACCESS_COOKIE = 'sep_at';
@@ -39,6 +46,7 @@ export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   @Post('sign-up')
+  @UseGuards(SignUpThrottle)
   @UsePipes(new ZodValidationPipe(signUpSchema))
   async signUp(
     @Body() body: SignUpInput,
@@ -52,6 +60,7 @@ export class AuthController {
 
   @Post('sign-in')
   @HttpCode(200)
+  @UseGuards(SignInThrottle)
   @UsePipes(new ZodValidationPipe(signInSchema))
   async signIn(
     @Body() body: SignInInput,
@@ -65,6 +74,7 @@ export class AuthController {
 
   @Post('sign-out')
   @HttpCode(204)
+  @UseGuards(SameOriginGuard)
   async signOut(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
     const rt = (req as unknown as { cookies?: Record<string, string> }).cookies?.[REFRESH_COOKIE];
     if (rt) await this.auth.logout(rt);
@@ -73,6 +83,7 @@ export class AuthController {
 
   @Post('refresh')
   @HttpCode(200)
+  @UseGuards(SameOriginGuard)
   async refresh(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
     const rt = (req as unknown as { cookies?: Record<string, string> }).cookies?.[REFRESH_COOKIE];
     if (!rt) return { user: null };
@@ -90,6 +101,7 @@ export class AuthController {
 
   @Post('forgot-password')
   @HttpCode(200)
+  @UseGuards(ForgotThrottle)
   @UsePipes(new ZodValidationPipe(requestPasswordResetSchema))
   async forgot(@Body() body: RequestPasswordResetInput) {
     return this.auth.requestPasswordReset(body);
@@ -97,6 +109,7 @@ export class AuthController {
 
   @Post('reset-password')
   @HttpCode(200)
+  @UseGuards(ResetThrottle)
   @UsePipes(new ZodValidationPipe(performPasswordResetSchema))
   async reset(@Body() body: PerformPasswordResetInput) {
     return this.auth.performPasswordReset(body);
@@ -118,7 +131,10 @@ function ctxFromReq(req: FastifyRequest) {
 
 function setSessionCookies(res: FastifyReply, accessToken: string, refreshToken: string) {
   const isProd = process.env.NODE_ENV === 'production';
-  // 15 minutes for access, 30 days for refresh
+  // 15 min access, 30 day refresh.
+  // sameSite=strict on the refresh token: it is only ever sent by our own
+  // /auth/refresh fetch and never needs to survive a cross-site navigation.
+  // Access token stays sameSite=lax so links from email/IDE landings still work.
   res.setCookie(ACCESS_COOKIE, accessToken, {
     httpOnly: true,
     secure: isProd,
@@ -129,7 +145,7 @@ function setSessionCookies(res: FastifyReply, accessToken: string, refreshToken:
   res.setCookie(REFRESH_COOKIE, refreshToken, {
     httpOnly: true,
     secure: isProd,
-    sameSite: 'lax',
+    sameSite: 'strict',
     path: '/',
     maxAge: 60 * 60 * 24 * 30,
   });

@@ -1,39 +1,73 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+ * Light theme (default) — devin.ai style
+ * ───────────────────────────────────────────── */
 @theme {
-  /* canvas — devin.ai light theme */
   --color-bg: oklch(1 0 0);
   --color-bg-elev: oklch(0.985 0 0);
   --color-bg-soft: oklch(0.97 0.002 240);
   --color-bg-grid: oklch(0.92 0.003 240);
 
-  /* ink */
   --color-fg: oklch(0.18 0.013 250);
   --color-fg-mute: oklch(0.45 0.014 250);
   --color-fg-dim: oklch(0.62 0.012 250);
 
-  /* accent — devin blue */
   --color-accent: oklch(0.6 0.18 260);
   --color-accent-strong: oklch(0.52 0.2 260);
   --color-accent-soft: oklch(0.85 0.08 260 / 0.35);
   --color-accent-fg: oklch(0.99 0 0);
 
-  /* signal */
   --color-success: oklch(0.62 0.16 150);
   --color-danger: oklch(0.6 0.22 25);
 
-  /* mesh — soft pastels for light bg */
   --mesh-1: oklch(0.85 0.12 260);
   --mesh-2: oklch(0.86 0.1 320);
   --mesh-3: oklch(0.86 0.11 200);
+
+  --dot-grid-color: oklch(0.85 0 0);
+  --shimmer-color: oklch(0.96 0 0);
 
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 }
 
-:root {
+:root,
+[data-theme="light"] {
   color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────
+ * Dark theme — same accent (devin blue), inverted
+ * canvas + ink, slightly cooler mesh.
+ * ───────────────────────────────────────────── */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: oklch(0.13 0.012 260);
+  --color-bg-elev: oklch(0.17 0.012 260);
+  --color-bg-soft: oklch(0.2 0.014 260);
+  --color-bg-grid: oklch(0.28 0.014 260);
+
+  --color-fg: oklch(0.97 0.005 250);
+  --color-fg-mute: oklch(0.74 0.012 250);
+  --color-fg-dim: oklch(0.55 0.012 250);
+
+  --color-accent: oklch(0.72 0.16 260);
+  --color-accent-strong: oklch(0.78 0.18 260);
+  --color-accent-soft: oklch(0.55 0.16 260 / 0.45);
+  --color-accent-fg: oklch(0.13 0.02 260);
+
+  --color-success: oklch(0.74 0.14 150);
+  --color-danger: oklch(0.7 0.2 25);
+
+  --mesh-1: oklch(0.45 0.14 260 / 0.7);
+  --mesh-2: oklch(0.45 0.12 320 / 0.55);
+  --mesh-3: oklch(0.45 0.13 200 / 0.55);
+
+  --dot-grid-color: oklch(0.32 0.012 260);
+  --shimmer-color: oklch(0.28 0.012 260);
 }
 
 html,
@@ -43,6 +77,8 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.011em;
+  /* Smooth colour transition when toggling theme. Short enough to feel snappy. */
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Lenis smooth-scroll required reset — keeps scrolling on html, prevents
@@ -90,7 +126,7 @@ html.lenis body {
     radial-gradient(45% 50% at 55% 100%, var(--mesh-3), transparent 60%);
 }
 
-/* Pill badge — devin.ai style */
+/* Pill badge — adapts to theme. */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -98,15 +134,15 @@ html.lenis body {
   height: 2rem;
   padding: 0 0.85rem 0 0.4rem;
   border-radius: 9999px;
-  background: oklch(0.18 0.013 250);
-  color: oklch(0.98 0 0);
+  background: var(--color-fg);
+  color: var(--color-bg);
   font-size: 0.8rem;
   letter-spacing: -0.005em;
-  border: 1px solid oklch(0.18 0.013 250);
-  transition: background 0.2s ease;
+  border: 1px solid var(--color-fg);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 .pill:hover {
-  background: oklch(0.25 0.013 250);
+  background: oklch(from var(--color-fg) calc(l + 0.07) c h);
 }
 .pill-tag {
   background: var(--color-accent);
@@ -119,9 +155,9 @@ html.lenis body {
   font-weight: 500;
 }
 
-/* Subtle dot grid backdrop for hero — devin uses this very subtly */
+/* Subtle dot grid backdrop for hero — adapts via --dot-grid-color. */
 .dot-grid {
-  background-image: radial-gradient(circle at 1px 1px, oklch(0.85 0 0) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, var(--dot-grid-color) 1px, transparent 0);
   background-size: 24px 24px;
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
@@ -150,16 +186,49 @@ html.lenis body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    oklch(0.96 0 0) 50%,
+    var(--shimmer-color) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: shimmer 2.5s linear infinite;
 }
 
+/* Soft gradient border that fades in on hover. Used for marketing cards. */
+.gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-accent) 60%, transparent),
+    transparent 50%,
+    color-mix(in oklab, var(--color-accent) 30%, transparent)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.gradient-border:hover::before,
+.gradient-border:focus-within::before {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
   .shimmer {
     animation: none;
+  }
+  html,
+  body {
+    transition: none;
   }
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { motion } from 'framer-motion';
 import { LogOut, Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -63,15 +64,18 @@ export function AdminTopbar() {
           </motion.div>
         </div>
 
-        <form action="/admin/logout" method="post">
-          <button
-            type="submit"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[var(--color-bg-grid)] px-3 text-xs font-medium text-[var(--color-fg-mute)] transition-colors hover:border-[var(--color-danger)]/40 hover:text-[var(--color-danger)]"
-          >
-            <LogOut className="size-3.5" />
-            Выйти
-          </button>
-        </form>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <form action="/admin/logout" method="post">
+            <button
+              type="submit"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[var(--color-bg-grid)] px-3 text-xs font-medium text-[var(--color-fg-mute)] transition-colors hover:border-[var(--color-danger)]/40 hover:text-[var(--color-danger)]"
+            >
+              <LogOut className="size-3.5" />
+              Выйти
+            </button>
+          </form>
+        </div>
       </header>
 
       {mobileOpen && <AdminSidebarMobile onClose={() => setMobileOpen(false)} />}

@@ -22,6 +22,8 @@ async function loadStats() {
     last7daysSignups,
     last7daysPayments,
     recentAudit,
+    activeSubsByPlan,
+    totalPayingUsers,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.user.count({ where: { emailVerifiedAt: { not: null } } }),
@@ -55,6 +57,18 @@ async function loadStats() {
         createdAt: true,
       },
     }),
+    // Subs + interval + plan prices, used to compute MRR from real plan prices.
+    prisma.subscription.findMany({
+      where: { status: { in: ['ACTIVE', 'TRIALING'] } },
+      select: {
+        interval: true,
+        plan: { select: { priceMonthlyRub: true, priceYearlyRub: true } },
+      },
+      take: 5000,
+    }),
+    prisma.user.count({
+      where: { subscriptions: { some: { status: { in: ['ACTIVE', 'TRIALING'] } } } },
+    }),
   ]);
 
   // Bucket signups + payments into 7-day series ending today.
@@ -84,6 +98,21 @@ async function loadStats() {
     (i) => last7daysPayments[i]?.paidAt,
   );
 
+  // MRR from active subs * plan price (yearly → /12). Honest estimate, not a
+  // GAAP figure — useful for "is the line going up" tracking.
+  let mrrRub = 0;
+  for (const s of activeSubsByPlan) {
+    if (s.interval === 'YEAR') {
+      mrrRub += Math.round((s.plan?.priceYearlyRub ?? 0) / 12);
+    } else {
+      mrrRub += s.plan?.priceMonthlyRub ?? 0;
+    }
+  }
+  const arpuRub = activeSubs > 0 ? Math.round(mrrRub / activeSubs) : 0;
+  const conversionPct =
+    totalUsers > 0 ? Math.round((totalPayingUsers / totalUsers) * 1000) / 10 : 0;
+  const revenue30d = revenueAgg._sum.amountRub ?? 0;
+
   return {
     totals: {
       users: totalUsers,
@@ -91,7 +120,11 @@ async function loadStats() {
       activeSubs,
       activePlans: totalPlans,
       activeApiKeys: totalApiKeys,
-      revenue30d: revenueAgg._sum.amountRub ?? 0,
+      revenue30d,
+      mrrRub,
+      arpuRub,
+      conversionPct,
+      payingUsers: totalPayingUsers,
     },
     series: { signupSeries, paymentSeries },
     recentAudit,
@@ -113,46 +146,49 @@ export default async function AdminOverviewPage() {
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <StatCard
+          label="MRR"
+          value={totals.mrrRub}
+          format="currency-rub"
+          hint="active + trialing"
+          iconName="credit-card"
+          delay={0.0}
+        />
+        <StatCard
+          label="ARPU"
+          value={totals.arpuRub}
+          format="currency-rub"
+          hint="MRR / active subs"
+          iconName="sparkles"
+          delay={0.05}
+        />
+        <StatCard
+          label="Conversion"
+          value={totals.conversionPct}
+          format="percent"
+          hint={`${totals.payingUsers}/${totals.users} users`}
+          iconName="user-check"
+          delay={0.1}
+        />
+        <StatCard
           label="Users"
           value={totals.users}
           hint={`${totals.verifiedUsers} verified`}
           iconName="users"
-          delay={0.0}
-        />
-        <StatCard
-          label="Active subs"
-          value={totals.activeSubs}
-          hint="ACTIVE + TRIALING"
-          iconName="user-check"
-          delay={0.05}
-        />
-        <StatCard
-          label="Plans"
-          value={totals.activePlans}
-          hint="active"
-          iconName="sparkles"
-          delay={0.1}
-        />
-        <StatCard
-          label="API keys"
-          value={totals.activeApiKeys}
-          hint="not revoked"
-          iconName="key-round"
           delay={0.15}
         />
         <StatCard
           label="Revenue 30d"
           value={totals.revenue30d}
           format="currency-rub"
-          hint="succeeded only"
+          hint="succeeded payments"
           iconName="credit-card"
           delay={0.2}
         />
         <StatCard
-          label="Audit (7d)"
-          value={recentAudit.length}
-          hint="recent operator actions"
-          iconName="inbox"
+          label="API keys"
+          value={totals.activeApiKeys}
+          hint="not revoked"
+          iconName="key-round"
           delay={0.25}
         />
       </section>

@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  NotFoundException,
   Post,
   Query,
   Res,
@@ -89,6 +90,11 @@ export class PaymentsController {
     @Body() body: { OutSum: string; InvId: string },
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
+    // Stub endpoints are dev/test-only. Refuse to operate when ROBOKASSA_TEST_MODE
+    // is off — never expose the synthetic-signature backdoor in real environments.
+    if (this.config.get<string>('ROBOKASSA_TEST_MODE') !== '1') {
+      throw new NotFoundException();
+    }
     const password2 = this.config.get<string>('ROBOKASSA_PASSWORD_2', 'password2');
     const sig = createHash('md5')
       .update(`${body.OutSum}:${body.InvId}:${password2}`, 'utf8')
@@ -118,6 +124,9 @@ export class PaymentsController {
     @Query('SignatureValue') signature: string,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
+    if (this.config.get<string>('ROBOKASSA_TEST_MODE') !== '1') {
+      throw new NotFoundException();
+    }
     const html = renderStubPage({ merchantLogin, outSum, invId, description, signature });
     res.header('content-type', 'text/html; charset=utf-8');
     return html;

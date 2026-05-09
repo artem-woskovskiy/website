@@ -54,6 +54,10 @@ export default async function AccountPage() {
       )
     : 30;
 
+  // Real signal that doesn't pretend to track call counts we never recorded:
+  // active API keys ≈ active integrations the user wired into the IDE.
+  const activeApiKeys = apiKeys?.length ?? 0;
+
   return (
     <div className="space-y-8">
       <AccountHero
@@ -68,9 +72,9 @@ export default async function AccountPage() {
       <Reveal>
         <KpiCards
           daysUntilRenewal={daysUntilRenewal}
-          apiKeyCount={apiKeys?.length ?? 0}
+          apiKeyCount={activeApiKeys}
           modelsAvailable={8}
-          callsToday={Math.floor(Math.random() * 80) + 20}
+          activeIntegrations={activeApiKeys}
         />
       </Reveal>
 

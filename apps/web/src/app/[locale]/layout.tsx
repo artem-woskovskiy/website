@@ -2,6 +2,7 @@ import { PageTransition } from '@/components/marketing/page-transition';
 import { ScrollProgress } from '@/components/marketing/scroll-progress';
 import { SmoothScroll } from '@/components/marketing/smooth-scroll';
 import { SplashScreen } from '@/components/marketing/splash-screen';
+import { ThemeScript } from '@/components/theme/theme-script';
 import { type Locale, locales } from '@/i18n/config';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
@@ -54,8 +55,12 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      suppressHydrationWarning
       className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
+      <head>
+        <ThemeScript />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <SplashScreen />

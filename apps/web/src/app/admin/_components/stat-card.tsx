@@ -10,7 +10,7 @@ interface StatCardProps {
   value: number;
   hint?: string;
   iconName?: 'users' | 'user-check' | 'sparkles' | 'key-round' | 'credit-card' | 'inbox';
-  format?: 'number' | 'currency-rub';
+  format?: 'number' | 'currency-rub' | 'percent';
   delay?: number;
   className?: string;
 }
@@ -22,6 +22,12 @@ function formatNumber(n: number): string {
 function formatRub(kopecks: number): string {
   const rub = Math.round(kopecks / 100);
   return `${rub.toLocaleString('ru-RU')} ₽`;
+}
+
+function formatPercent(n: number): string {
+  // n is already a percentage (e.g. 12.5 → "12.5%").
+  const rounded = Math.round(n * 10) / 10;
+  return `${rounded.toLocaleString('ru-RU')}%`;
 }
 
 import { 
@@ -55,9 +61,11 @@ export function StatCard({
   const Icon = iconName ? ICONS[iconName] : null;
   const motionValue = useMotionValue(0);
   const spring = useSpring(motionValue, { duration: 800, bounce: 0 });
-  const display = useTransform(spring, (v) =>
-    format === 'currency-rub' ? formatRub(v) : formatNumber(v),
-  );
+  const display = useTransform(spring, (v) => {
+    if (format === 'currency-rub') return formatRub(v);
+    if (format === 'percent') return formatPercent(v);
+    return formatNumber(v);
+  });
 
   useEffect(() => {
     motionValue.set(value);
