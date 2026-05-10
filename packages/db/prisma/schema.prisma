@@ -51,6 +51,7 @@ model User {
   verifyTokens    VerificationToken[]
   resetTokens     PasswordResetToken[]
   auditLogs       AuditLog[]
+  deviceAuths     DeviceAuthorization[]
 
   @@index([role])
 }
@@ -82,10 +83,19 @@ model Session {
   createdAt       DateTime @default(now())
   lastSeenAt      DateTime @default(now())
 
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // OAuth attribution. null = browser/web session, set = device-flow client (e.g. 'ide-desktop').
+  clientId        String?
+  scope           String[] @default([])
+  deviceName      String?
+  platform        String?
+  geoCountry      String?
+
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  oauthClient     OAuthClient? @relation(fields: [clientId], references: [clientId])
 
   @@index([userId])
   @@index([expiresAt])
+  @@index([clientId])
 }
 
 model Device {
@@ -100,6 +110,70 @@ model Device {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+// ─────────────────────────────────────────────
+// OAuth device flow (sign-in-from-IDE)
+// ─────────────────────────────────────────────
+
+enum DeviceAuthStatus {
+  PENDING
+  APPROVED
+  DENIED
+  EXPIRED
+  CONSUMED
+}
+
+// Registered first-party OAuth clients (Sepaito IDE, CLI, VS Code extension, ...).
+model OAuthClient {
+  id            String   @id @default(cuid())
+  clientId      String   @unique // 'ide-desktop' | 'cli' | 'vscode-ext'
+  name          String
+  description   String?
+  iconUrl       String?
+  redirectUris  String[] @default([]) // exact-match whitelist
+  allowedScopes String[] @default([])
+  requirePkce   Boolean  @default(true)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  authorizations DeviceAuthorization[]
+  sessions       Session[]
+
+  @@index([isActive])
+}
+
+// One row per Authorization-Code request from an OAuth client.
+// Lifecycle: PENDING → APPROVED (code issued) → CONSUMED (token exchanged) | DENIED | EXPIRED.
+model DeviceAuthorization {
+  id                  String           @id @default(cuid())
+  clientId            String
+  userId              String?
+  codeHash            String?          @unique // sha256(authorization_code); set when APPROVED
+  codeChallenge       String
+  codeChallengeMethod String           // 'S256'
+  redirectUri         String
+  scope               String[]         @default([])
+  status              DeviceAuthStatus @default(PENDING)
+
+  deviceName          String?
+  platform            String?
+  ip                  String?
+  userAgent           String?
+  geoCountry          String?
+
+  expiresAt           DateTime
+  approvedAt          DateTime?
+  consumedAt          DateTime?
+  createdAt           DateTime         @default(now())
+
+  oauthClient         OAuthClient      @relation(fields: [clientId], references: [clientId])
+  user                User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([status, expiresAt])
 }
 
 model VerificationToken {

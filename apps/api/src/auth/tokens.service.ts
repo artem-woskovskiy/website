@@ -18,6 +18,28 @@ export class TokensService {
     });
   }
 
+  /**
+   * Access token issued to first-party OAuth clients (IDE / CLI / VS Code ext).
+   * Carries `clientId`, `scope` and `sid` on top of the standard web claims
+   * so server-side endpoints can:
+   *   - decide on scope-based authorisation,
+   *   - revoke a single device session via the `sid` claim,
+   *   - distinguish IDE traffic from browser traffic in audit logs.
+   */
+  async signOauthAccess(payload: {
+    sub: string;
+    email: string;
+    role: Role;
+    clientId: string;
+    scope: string[];
+    sid: string;
+  }): Promise<string> {
+    return this.jwt.signAsync(payload, {
+      secret: this.config.get<string>('JWT_SECRET'),
+      expiresIn: this.config.get<string>('JWT_ACCESS_TTL') ?? '15m',
+    });
+  }
+
   newRefreshToken(): { token: string; hash: string } {
     const token = `srt_${randomBytes(32).toString('base64url')}`;
     const hash = createHash('sha256').update(token).digest('hex');

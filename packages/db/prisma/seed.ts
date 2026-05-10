@@ -74,7 +74,29 @@ async function main() {
     update: { role: 'ADMIN' },
   });
 
-  console.log('Seeded plans + bootstrap admin:', adminEmail);
+  // First-party OAuth clients. redirect_uris use a custom URL scheme so the
+  // OS deep-link prompt ("Open in Sepaito?") fires after the consent screen.
+  await prisma.oAuthClient.upsert({
+    where: { clientId: 'ide-desktop' },
+    create: {
+      clientId: 'ide-desktop',
+      name: 'Sepaito Desktop',
+      description: 'The Sepaito AI Agents IDE for macOS, Windows and Linux.',
+      redirectUris: ['sepaito://oauth/callback'],
+      allowedScopes: [
+        'profile',
+        'projects.read',
+        'projects.write',
+        'usage.write',
+        'usage.read',
+      ],
+      requirePkce: true,
+      isActive: true,
+    },
+    update: {},
+  });
+
+  console.log('Seeded plans + bootstrap admin + oauth clients:', adminEmail);
 }
 
 main()

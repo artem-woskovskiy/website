@@ -2,7 +2,7 @@
 
 import { Link, usePathname } from '@/i18n/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
-import { CreditCard, KeyRound, Shield, User } from 'lucide-react';
+import { CreditCard, KeyRound, Laptop, Shield, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export function AccountSidebar({ isAdmin }: { isAdmin: boolean }) {
@@ -14,6 +14,7 @@ export function AccountSidebar({ isAdmin }: { isAdmin: boolean }) {
     { href: '/account', label: t('general'), icon: User },
     { href: '/account/billing', label: t('billing'), icon: CreditCard },
     { href: '/account/api-keys', label: t('apiKeys'), icon: KeyRound },
+    { href: '/account/devices', label: t('devices'), icon: Laptop },
   ];
 
   return (

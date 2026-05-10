@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { envSchema } from './config/env';
 import { GrpcModule } from './grpc/grpc.module';
 import { HealthModule } from './health/health.module';
+import { OAuthModule } from './oauth/oauth.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { QueueModule } from './queue/queue.module';
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module';
     PrismaModule,
     QueueModule,
     AuthModule,
+    OAuthModule,
     UsersModule,
     SubscriptionsModule,
     PaymentsModule,
