@@ -67,10 +67,9 @@ export class OAuthController {
   @Post('authorize')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  @UsePipes(new ZodValidationPipe(authorizeBodySchema))
   async authorize(
     @CurrentUser() user: AuthUser,
-    @Body()
+    @Body(new ZodValidationPipe(authorizeBodySchema))
     body: z.infer<typeof authorizeBodySchema>,
     @Req() req: FastifyRequest,
   ) {
@@ -137,9 +136,9 @@ export class OAuthController {
    */
   @Post('token')
   @HttpCode(200)
-  @UsePipes(new ZodValidationPipe(oauthTokenSchema))
   async token(
-    @Body() body: { grant_type: 'authorization_code' | 'refresh_token' } & Record<string, unknown>,
+    @Body(new ZodValidationPipe(oauthTokenSchema))
+    body: { grant_type: 'authorization_code' | 'refresh_token' } & Record<string, unknown>,
     @Req() req: FastifyRequest,
   ) {
     const ctx = ctxFromReq(req);
@@ -177,9 +176,8 @@ export class OAuthController {
    */
   @Post('revoke')
   @HttpCode(200)
-  @UsePipes(new ZodValidationPipe(oauthRevokeSchema))
   async revoke(
-    @Body()
+    @Body(new ZodValidationPipe(oauthRevokeSchema))
     body: {
       client_id: string;
       token: string;
