@@ -2,18 +2,20 @@
 
 import { Link, usePathname } from '@/i18n/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
-import { CreditCard, KeyRound, Shield, User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { CreditCard, KeyRound, Laptop, Shield, User } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function AccountSidebar({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
   const t = useTranslations('account.nav');
+  const locale = useLocale();
   const reduced = useReducedMotion();
 
   const items = [
     { href: '/account', label: t('general'), icon: User },
     { href: '/account/billing', label: t('billing'), icon: CreditCard },
     { href: '/account/api-keys', label: t('apiKeys'), icon: KeyRound },
+    { href: '/account/devices', label: t('devices'), icon: Laptop },
   ];
 
   return (
@@ -24,6 +26,11 @@ export function AccountSidebar({ isAdmin }: { isAdmin: boolean }) {
           <Link
             key={it.href}
             href={it.href}
+            prefetch={false}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `/${locale}${it.href}`;
+            }}
             className={`relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
               active
                 ? 'text-[var(--color-accent)]'

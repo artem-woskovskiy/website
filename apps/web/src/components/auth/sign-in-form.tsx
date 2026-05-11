@@ -31,9 +31,7 @@ export function SignInForm() {
     setServerError(null);
     try {
       await api.post('/auth/sign-in', data);
-      const next = search.get('next') ?? '/account';
-      router.push(next);
-      router.refresh();
+      window.location.href = '/account';
     } catch (err) {
       setServerError(err instanceof Error ? err.message : tc('error'));
     }

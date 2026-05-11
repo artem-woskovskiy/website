@@ -272,9 +272,62 @@
     },
     "devices": {
       "title": "Urządzenia",
-      "subtitle": "Aktywne sesje",
-      "revoke": "Wyloguj",
-      "thisDevice": "To urządzenie"
+      "subtitle": "Aktywne urządzenia i aplikacje zalogowane na Twoje konto Sepaito.",
+      "revoke": "Odwołaj",
+      "revoking": "Odwołuję…",
+      "thisDevice": "To urządzenie",
+      "addedOn": "Dodano",
+      "lastSeen": "Ostatnia aktywność",
+      "empty": "Brak urządzeń. Zaloguj się w aplikacji Sepaito Desktop — pojawi się tutaj."
+    }
+  },
+  "oauth": {
+    "consent": {
+      "title": "Otworzyć w {app}?",
+      "defaultSubtitle": "Klient Sepaito prosi o zalogowanie.",
+      "signedInAs": "Zalogowany jako",
+      "verified": "Zweryfikowany",
+      "device": "Urządzenie",
+      "app": "Aplikacja",
+      "os": "OS",
+      "ip": "IP",
+      "location": "Lokalizacja",
+      "grants": "Będzie mógł",
+      "open": "Otwórz {app}",
+      "opening": "Otwieram…",
+      "deny": "Anuluj",
+      "denying": "Anuluję…"
+    },
+    "error": {
+      "backToAccount": "Powrót do konta",
+      "invalid_request": {
+        "title": "Nieprawidłowe żądanie",
+        "body": "W żądaniu autoryzacji brakuje wymaganych parametrów lub mają one nieprawidłowe wartości."
+      },
+      "invalid_client": {
+        "title": "Nieznana aplikacja",
+        "body": "Nie rozpoznajemy aplikacji, która prosi o zalogowanie."
+      },
+      "invalid_redirect_uri": {
+        "title": "Niezaufany URL przekierowania",
+        "body": "Adres powrotu aplikacji nie jest zarejestrowany."
+      },
+      "invalid_scope": {
+        "title": "Niedozwolony zakres uprawnień",
+        "body": "Aplikacja poprosiła o uprawnienia, których nie może żądać."
+      },
+      "email_not_verified": {
+        "title": "Najpierw zweryfikuj email",
+        "body": "Potwierdź swój adres email, zanim zalogujesz się do aplikacji Sepaito Desktop."
+      },
+      "login_required": {
+        "title": "Wymagane logowanie",
+        "body": "Sesja wygasła. Zaloguj się ponownie i spróbuj jeszcze raz z aplikacji."
+      },
+      "server_error": {
+        "title": "Coś poszło nie tak",
+        "body": "Nie udało się dokończyć autoryzacji. Spróbuj ponownie za chwilę."
+      }
     }
   },
   "admin": {

@@ -71,7 +71,7 @@ function PriceCard({
     <div
       className={`flex h-full flex-col rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 ${
         isPro
-          ? 'border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-[0_30px_80px_-30px_rgba(242,162,74,0.5)]'
+          ? 'border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-[0_30px_80px_-30px_rgba(59,130,246,0.3)]'
           : 'border-[var(--color-bg-grid)] bg-[var(--color-bg-elev)] hover:border-[var(--color-accent)]'
       }`}
     >

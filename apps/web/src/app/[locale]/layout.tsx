@@ -57,9 +57,7 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <SmoothScroll />
-          <ScrollProgress />
-          <PageTransition>{children}</PageTransition>
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

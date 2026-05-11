@@ -19,6 +19,9 @@ async function bootstrap() {
     credentials: true,
   });
   await app.register(import('@fastify/cookie' as never) as never);
+  await app.register(import('@fastify/helmet' as never) as never, {
+    contentSecurityPolicy: false, // handled by Next.js on the frontend
+  });
 
   app.setGlobalPrefix('api', { exclude: ['/health', '/'] });
   // Validation is handled per-endpoint via ZodValidationPipe — no global pipe.

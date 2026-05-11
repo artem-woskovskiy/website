@@ -272,9 +272,62 @@
     },
     "devices": {
       "title": "Devices",
-      "subtitle": "Active sessions",
-      "revoke": "Sign out",
-      "thisDevice": "This device"
+      "subtitle": "Active devices and applications signed in to your Sepaito account.",
+      "revoke": "Revoke",
+      "revoking": "Revoking…",
+      "thisDevice": "This device",
+      "addedOn": "Added",
+      "lastSeen": "Last seen",
+      "empty": "No devices yet. Sign in from the Sepaito desktop app to see it here."
+    }
+  },
+  "oauth": {
+    "consent": {
+      "title": "Open {app}?",
+      "defaultSubtitle": "A Sepaito client wants to sign you in.",
+      "signedInAs": "Signed in as",
+      "verified": "Verified",
+      "device": "Device",
+      "app": "App",
+      "os": "OS",
+      "ip": "IP",
+      "location": "Location",
+      "grants": "Will be able to",
+      "open": "Open {app}",
+      "opening": "Opening…",
+      "deny": "Cancel",
+      "denying": "Cancelling…"
+    },
+    "error": {
+      "backToAccount": "Back to account",
+      "invalid_request": {
+        "title": "Invalid request",
+        "body": "The authorization request is missing required parameters or contains invalid values."
+      },
+      "invalid_client": {
+        "title": "Unknown application",
+        "body": "We don't recognize the application that asked for sign-in."
+      },
+      "invalid_redirect_uri": {
+        "title": "Untrusted redirect URL",
+        "body": "The application's redirect URL is not registered on this account."
+      },
+      "invalid_scope": {
+        "title": "Invalid scope",
+        "body": "The application asked for permissions it isn't allowed to request."
+      },
+      "email_not_verified": {
+        "title": "Verify your email first",
+        "body": "Please confirm your email address before signing in to the Sepaito desktop app."
+      },
+      "login_required": {
+        "title": "Sign in required",
+        "body": "Your session has expired. Sign in again and retry from the app."
+      },
+      "server_error": {
+        "title": "Something went wrong",
+        "body": "We couldn't complete the authorization. Try again in a moment."
+      }
     }
   },
   "admin": {
