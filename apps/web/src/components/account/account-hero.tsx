@@ -39,7 +39,7 @@ export function AccountHero({
   return (
     <CursorSpotlight className="overflow-hidden rounded-2xl border border-[var(--color-bg-grid)] bg-[var(--color-bg-elev)]" size={380}>
       {/* Animated gradient mesh */}
-      <motion.div
+      <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-0 opacity-70"
         style={{
@@ -49,47 +49,24 @@ export function AccountHero({
             radial-gradient(40% 40% at 50% 100%, oklch(0.85 0.12 320 / 0.2), transparent 60%)
           `,
         }}
-        animate={
-          reduced
-            ? undefined
-            : { backgroundPosition: ['0% 0%', '20% 10%', '0% 0%'] }
-        }
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="relative grid grid-cols-1 gap-8 p-8 md:grid-cols-[1fr_auto] md:p-10">
         {/* Left: identity */}
         <div>
           <div className="flex items-center gap-4">
-            <motion.div
-              initial={reduced ? false : { scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-              className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-[var(--color-accent)] to-[oklch(0.55_0.20_240)] font-mono text-lg font-semibold text-white shadow-[0_10px_30px_-10px_var(--color-accent)]"
-            >
+            <div className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-[var(--color-accent)] to-[oklch(0.55_0.20_240)] font-mono text-lg font-semibold text-white shadow-[0_10px_30px_-10px_var(--color-accent)]">
               {initials}
-            </motion.div>
+            </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
                   {name || 'Welcome back'}
                 </h1>
-                <motion.span
-                  className="inline-flex h-5 items-center gap-1 rounded-full border border-[var(--color-bg-grid)] bg-[var(--color-bg)] px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]"
-                  animate={
-                    reduced
-                      ? undefined
-                      : { boxShadow: [
-                          '0 0 0 0 rgba(34,197,94,0)',
-                          '0 0 0 4px rgba(34,197,94,0.15)',
-                          '0 0 0 0 rgba(34,197,94,0)',
-                        ] }
-                  }
-                  transition={{ duration: 2.2, repeat: Infinity }}
-                >
+                <span className="inline-flex h-5 items-center gap-1 rounded-full border border-[var(--color-bg-grid)] bg-[var(--color-bg)] px-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
                   <span className="size-1.5 rounded-full bg-[var(--color-success)]" />
                   online
-                </motion.span>
+                </span>
               </div>
               <p className="truncate text-sm text-[var(--color-fg-mute)]">{email}</p>
             </div>

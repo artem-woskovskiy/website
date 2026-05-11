@@ -358,3 +358,14 @@ model AuditLog {
   @@index([action])
   @@index([createdAt])
 }
+
+// ─────────────────────────────────────────────
+// System Configuration
+// ─────────────────────────────────────────────
+
+model SystemConfig {
+  key         String   @id // e.g. 'maintenance_mode', 'registration_enabled'
+  value       String   // stored as string/json string
+  description String?
+  updatedAt   DateTime @updatedAt
+}

@@ -3,27 +3,24 @@
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { LocaleSwitcher } from './locale-switcher';
 import { Magnetic } from './magnetic';
 
 export function SiteHeader({ user }: { user: { email: string; name: string | null } | null }) {
   const t = useTranslations('nav');
+  const locale = useLocale();
   const { scrollY } = useScroll();
   // Slightly stronger blur once the user has scrolled past the hero.
   const bgOpacity = useTransform(scrollY, [0, 80], [0.6, 0.9]);
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
 
   return (
-    <motion.header
-      className="sticky top-0 z-40 backdrop-blur-md"
-      style={{
-        backgroundColor: useTransform(bgOpacity, (v) => `rgba(255, 255, 255, ${v})`),
-      }}
+    <header
+      className="sticky top-0 z-40 backdrop-blur-md border-b border-[var(--color-bg-grid)] bg-white/60"
     >
-      <motion.div
-        className="absolute inset-x-0 bottom-0 h-px bg-[var(--color-bg-grid)]"
-        style={{ opacity: borderOpacity }}
+      <div
+        className="absolute inset-x-0 bottom-0 h-px bg-[var(--color-bg-grid)] opacity-0"
       />
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 md:px-10">
         <Link href="/" className="group flex items-center gap-2">
@@ -48,6 +45,11 @@ export function SiteHeader({ user }: { user: { email: string; name: string | nul
           {user ? (
             <Link
               href="/account"
+              prefetch={false}
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/${locale}/account`;
+              }}
               className={cn(
                 'inline-flex h-9 items-center gap-2 rounded-md border border-[var(--color-bg-grid)] px-3 text-sm transition-colors hover:border-[var(--color-accent)]',
               )}
@@ -77,7 +79,7 @@ export function SiteHeader({ user }: { user: { email: string; name: string | nul
           )}
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }
 

@@ -33,12 +33,20 @@ const THEMES: Theme[] = [
   { name: 'Catppuccin',     bg: '#1e1e2e', bgElev: '#313244', border: '#45475a', fg: '#cdd6f4', mute: '#a6adc8', accent: '#f5c2e7', string: '#a6e3a1', number: '#f38ba8', comment: '#7f849c' },
   { name: 'One Dark',       bg: '#282c34', bgElev: '#21252b', border: '#3e4451', fg: '#abb2bf', mute: '#828997', accent: '#e06c75', string: '#98c379', number: '#d19a66', comment: '#5c6370' },
   { name: 'Synthwave',      bg: '#1a0b2e', bgElev: '#241139', border: '#3a1d56', fg: '#f0eff4', mute: '#a78bda', accent: '#ff00ea', string: '#36f9f6', number: '#fede5d', comment: '#7a5cad' },
+  { name: 'Sepaito BW',     bg: '#000000', bgElev: '#121212', border: '#252525', fg: '#ffffff', mute: '#707070', accent: '#ffffff', string: '#ffffff', number: '#ffffff', comment: '#505050' },
   { name: 'Sepaito Mono',   bg: '#0d0d0d', bgElev: '#161616', border: '#262626', fg: '#e5e5e5', mute: '#a3a3a3', accent: '#9aa0a6', string: '#cccccc', number: '#a3a3a3', comment: '#525252' },
 ];
 
 export function ThemesStrip() {
   const t = useTranslations('themesStrip');
   const [active, setActive] = useState<Theme>(THEMES[0] as Theme);
+
+  const applyTheme = (th: Theme) => {
+    setActive(th);
+    const themeId = th.name === 'Sepaito BW' ? 'bw' : th.name === 'Light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', themeId);
+    document.cookie = `theme=${themeId}; path=/; max-age=31536000`;
+  };
 
   return (
     <div>
@@ -64,7 +72,7 @@ export function ThemesStrip() {
                 type="button"
                 onMouseEnter={() => setActive(th)}
                 onFocus={() => setActive(th)}
-                onClick={() => setActive(th)}
+                onClick={() => applyTheme(th)}
                 className={`group w-full rounded-lg border p-4 text-left transition-all duration-300 hover:-translate-y-0.5 ${
                   isActive
                     ? 'border-[var(--color-accent)] shadow-[0_0_0_1px_var(--color-accent)_inset]'
