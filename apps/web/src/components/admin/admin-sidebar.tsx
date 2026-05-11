@@ -1,7 +1,7 @@
 'use client';
 
 import { Link, usePathname } from '@/i18n/navigation';
-import { LayoutDashboard, Users, CreditCard, ShieldCheck, ArrowLeft, FileText, Monitor, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ShieldCheck, ArrowLeft, FileText, Monitor, Settings, Webhook } from 'lucide-react';
 import { useLocale } from 'next-intl';
 
 export function AdminSidebar() {
@@ -13,6 +13,7 @@ export function AdminSidebar() {
     { label: 'Users', href: '/admin/users', icon: Users },
     { label: 'Payments', href: '/admin/payments', icon: CreditCard },
     { label: 'Audit Log', href: '/admin/audit-log', icon: FileText },
+    { label: 'Webhooks', href: '/admin/webhooks', icon: Webhook },
     { label: 'Sessions', href: '/admin/sessions', icon: Monitor },
     { label: 'Plans', href: '/admin/plans', icon: CreditCard },
     { label: 'Settings', href: '/admin/settings', icon: Settings },

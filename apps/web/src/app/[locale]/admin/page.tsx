@@ -3,6 +3,7 @@ import { serverFetch } from '@/lib/server-api';
 import { Users, CreditCard, Zap, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { GrowthChart } from '@/components/admin/growth-chart';
+import { LiveMetricsCard } from '@/components/admin/live-metrics-card';
 
 export const metadata = { title: 'Admin Overview' };
 
@@ -56,6 +57,9 @@ export default async function AdminOverviewPage() {
           trend="+18% from last month"
         />
       </div>
+
+      {/* Live activity (real-time polling) */}
+      <LiveMetricsCard />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Growth Chart */}

@@ -24,3 +24,7 @@ export function CardTitle({ className, ...rest }: HTMLAttributes<HTMLHeadingElem
 export function CardDescription({ className, ...rest }: HTMLAttributes<HTMLParagraphElement>) {
   return <p className={cn('text-sm text-[var(--color-fg-mute)]', className)} {...rest} />;
 }
+
+export function CardContent({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('text-sm', className)} {...rest} />;
+}
